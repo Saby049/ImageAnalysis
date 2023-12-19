@@ -7,7 +7,7 @@ from openai import AzureOpenAI
 import json
 
 # Configuration
-GPT4V_KEY = "bfdc6726bd7f4dbd8bbe701c8c55a138"
+GPT4V_KEY = "your GPT4 key"
 
 # setting app and CORS
 app = Flask(__name__)
@@ -18,17 +18,17 @@ CORS(app)
 @cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def image_observation():
     text = request.data.decode('utf-8')
-    message_text = [{"role":"system","content":"You are an AI assistant which takes multiple sentences and club them into one sentence and make it better for the audience. If in the input it is mentioned that it is a blurry image mention it , otherwise do not mention about the quality of the image. Installation Rating is best 5 and worst 1 , it will be in the range of 5 to 1."}]
+    message_text = [{"role":"system","content":"You are an AI assistant who takes multiple sentences and clubs them into one sentence and makes it better for the audience. If in the input it is mentioned that it is a blurry image mention it, otherwise do not mention the quality of the image. Installation Rating is best 5 and worst 1, it will be in the range of 5 to 1."}]
     message_text.append({"role":"user","content":text})
     # gets the API Key from environment variable AZURE_OPENAI_API_KEY
     client = AzureOpenAI(
-        api_version= "2023-07-01-preview",
-        azure_endpoint= "https://cloudxp-openai.openai.azure.com",
-        api_key= "53fb99eee193407081d9d28d1ab7eabd",
+        api_version= "your_version",
+        azure_endpoint= "your_endpoint",
+        api_key= "your_key",
     )
 
     completion = client.chat.completions.create(
-        model="gpt-35-turbo",  # e.g. gpt-35-instant
+        model="your_model",  # e.g. gpt-35-instant
         messages=message_text
     )
     result = completion.json()
@@ -63,7 +63,7 @@ def process_info():
                 "content": [
                     {
                         "type": "text",
-                        "text": "You are an AI assistant that explains devices and suggests whether proper installation has been provided or not. If not suggest right options. Dont provide any more details. Provide only image description and improvements."
+                        "text": "You are an AI assistant that explains devices and suggests whether proper installation has been provided or not. If not suggest the right options. Don't provide any more details. Provide only image description and improvements."
                     }
                 ]
             },
@@ -78,7 +78,7 @@ def process_info():
                     },
                     {
                         "type": "text",
-                        "text": "Provide Image description and suggetion"
+                        "text": "Provide Image description and suggestion"
                     }
                 ]
             }
@@ -88,11 +88,11 @@ def process_info():
         "max_tokens": 800
     }
 
-    GPT4V_ENDPOINT = "https://visionopenai007.openai.azure.com/openai/deployments/visiongpt/extensions/chat/completions?api-version=2023-07-01-preview"
+    GPT4V_ENDPOINT = "your_gpt4_endpoint"
     # Send request
     try:
         response = requests.post(GPT4V_ENDPOINT, headers=headers, json=payload)
-        response.raise_for_status()  # Will raise an HTTPError if the HTTP request returned an unsuccessful status code
+        response.raise_for_status()  # Will raise an HTTPError if the HTTP request returns an unsuccessful status code
     except requests.RequestException as e:
         raise SystemExit(f"Failed to make the request. Error: {e}")
 
